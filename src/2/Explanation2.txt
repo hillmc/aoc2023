@@ -1,0 +1,30 @@
+100 games. Might as well do by hand
+Criteria is: reject >12 red, >13 green, >14 blue
+
+Load in editor - remove all with *any* value over 14
+
+save as input-obvious, approx 50 games
+
+save as input-cleaned
+
+extracting game numbers (have colons so can't use awk $2)
+
+cut c6,7 input-cleaned
+...beware loses the 100 0 digit (so has 10) must add 90
+
+so
+
+cut c6,7,8 input-cleaned >okgames
+
+to get the numbers and colons and then
+
+grep -o '^[0-9]*' okgames >okgames2
+
+Games acceptable
+
+awk '{ sum += $1 } END { print sum}' okgames2 
+2721
+
+Yay! Gold star!
+
+Part 2 is minimum of each colour. By hand? Arse! Oh alright then...

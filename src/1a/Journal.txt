@@ -1,0 +1,38 @@
+(1,000 lines so can check results by num of lines)
+
+Extracts all digits:
+
+('o' is just output the match bit, e is extended I think)
+
+grep -oe '\([0-9]*\)' input >digitsonly
+
+--> this separated out into different fields on different lines (so 5xx7 returned 5 then 7)
+
+this does the job: 
+
+sed 's/[^0-9]*//g' >alldigits
+
+# this just finds lines with pairs of characters
+grep '^..$' alldigits >pairs.csv
+
+# this is fine except it only returns one digit if there is only one digit
+sed 's/^\(.\).*\(.\)$/\1\2/'
+
+so lets add that in the third place, then cut the first two chars:
+sed 's/^\(.\).*\(.\)$/\1\2\1/'
+
+nope. I think it's not matching single digits
+
+let's go back and do this properly then.
+sed 's/^\([0-9]\).*\([0-9]\)$/\1\2/'
+
+No I'm not thinking of this right; that's a search/replace but the search should be...
+
+bugger it, let's just get the first (tens) into one file, the units in another, then add them up
+
+grep -o '^.' alldigits >tens.csv
+
+
+Answer: 55,172. 
+
+Assuming equally random nnumbers 1-9 for tens (-->5) -> 50,000+5,000 = 55,00 ish. 

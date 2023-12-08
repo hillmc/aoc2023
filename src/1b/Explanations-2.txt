@@ -1,0 +1,48 @@
+Thinking time for java, but before then could just do search and replace and then run the first one
+
+Took 60s to run search and replace for all terms
+
+Ran others
+
+54393 (49460 + 4933)
+
+"Too low"
+
+Scan by eye. All looks good - except 326ish there's an eightwo which converted to eigh2. I wonder if this is supposed to be eight with two random letters after?
+
+Search and replace the other way.
+ 
+Actually no, search for combos (eg eigh2). Juddghing by the example (there is eightwo and oneight in there) so search for 
+eigh2 -> 82
+1ight -> 18
+3ight -> 38
+5ight -> 58
+7ine -> 79
+tw1 -> 21
+
+(Re-ran without the tw1), got 49880, 4975 = 54855
+
+Total up tens using awk
+awk '{ sum += $1 } END { print sum }' tens
+
+with tw1 check
+
+get 49950 + 4975 = 54925
+
+sed 's/[^0-9]*//g' input-numeric.txt >alldigits
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ grep -o '^.' alldigits >tens.csv
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ grep -o '.$' alldigits >units.csv
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ sed 's/[^0-9]*//g' input-numeric.txt >alldigits
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ grep -o '.$' alldigits >units.csv
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ grep -o '^.' alldigits >tens.csv
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ sed 's/[^0-9]*//g' input-numeric.txt >alldigits
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ grep -o '^.' alldigits >tens.csv
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ grep -o '.$' alldigits >units.csv
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ awk '{ sum += $1 } END { print sum }' tens.csv 
+4995
+martin@HomeYoga:~/Downloads/2023AdventOfCode/2$ awk '{ sum += $1 } END { print sum }' units.csv
+4975
+
+
+
+
