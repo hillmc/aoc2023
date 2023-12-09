@@ -26,35 +26,33 @@ public class EngineParts {
 			while (cursor<thisLine.length()) {
 
 				//find next digit
-				while (cursor<thisLine.length() && !StringUtil.isNumeric(thisLine.charAt(cursor)) ) cursor = cursor +1;
+				while (cursor<thisLine.length() && !isNumeric(thisLine.charAt(cursor)) ) cursor = cursor +1;
 				if (cursor>=thisLine.length()) break; //clumsy
 				int partStart = cursor;
 				
 				//find next non-digit
-				while (cursor<thisLine.length() && StringUtil.isNumeric(thisLine.charAt(cursor)) ) cursor = cursor +1;
+				while (cursor<thisLine.length() && isNumeric(thisLine.charAt(cursor)) ) cursor = cursor +1;
 				int partEnd = cursor;
 
 				String partNum = thisLine.substring(partStart, partEnd); 
-				System.out.print(partNum);
 				
 				boolean partIsValid = false;
-				int pos = thisLine.indexOf(partNum); 
 				if (lastLine != null) {
-					int start = Math.max(0,  pos-1);
-					int end = Math.min(pos+partNum.length()+1, lastLine.length());
+					int start = Math.max(0,  partStart-1);
+					int end = Math.min(partEnd+1, lastLine.length());
 					for (int i=start;i<end;i++) {
 						if (isSymbol(lastLine.charAt(i))) {
 							partIsValid = true;
 						}
 					}
 				}
-				if (pos>0 && isSymbol(thisLine.charAt(pos-1))) partIsValid = true;
-				if ((pos+partNum.length())<thisLine.length() && isSymbol(thisLine.charAt(pos+partNum.length()))) partIsValid = true;
+				if (partStart>0 && isSymbol(thisLine.charAt(partStart-1))) partIsValid = true;
+				if (partEnd<thisLine.length() && isSymbol(thisLine.charAt(partEnd))) partIsValid = true;
 
 				//in this case, at the end of file this will be a blank line
 				if (nextLine.length()>1) {
-					int start = Math.max(0,  pos-1);
-					int end = Math.min(pos+partNum.length()+1, nextLine.length());
+					int start = Math.max(0,  partStart-1);
+					int end = Math.min(partEnd+1, nextLine.length());
 					for (int i=start;i<end;i++) {
 						if (isSymbol(nextLine.charAt(i))) {
 							partIsValid = true;
@@ -63,14 +61,14 @@ public class EngineParts {
 				}
 
 				if (partIsValid) {
-					System.out.print(" Y / ");  
+					System.out.print(partNum+" Y / ");  
 					sum = sum + Integer.parseInt(partNum);
 				}
-				else System.out.print(" N / ");
+				else System.out.print(partNum+" N / ");
 	
 			}
 			
-			System.out.println();
+			System.out.println(sum);
 
 			lastLine = thisLine;
 			thisLine = nextLine;
@@ -79,11 +77,22 @@ public class EngineParts {
 		}
 		
 		System.out.println("Total "+sum);
+		
+		in.close();
 	}
 	
 	/** Returns true if it's a 'diagram' - ie not a number or a dot */
 	public static boolean isSymbol(char c) {
-		return !("01234567890.".contains(""+c));
+		return !("1234567890.".contains(""+c));
+	}
+
+	/** Returns true if it's a 'gear' - ie a star */
+	public static boolean isGear(char c) {
+		return (c=='*');
+	}
+
+	public static boolean isNumeric(char c) {
+		return ("1234567890".contains(""+c));
 	}
 	
 	public static void dumpFields(String[] fields) {

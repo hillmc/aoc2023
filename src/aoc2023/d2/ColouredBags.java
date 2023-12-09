@@ -57,6 +57,8 @@ public class ColouredBags {
 		
 		System.out.println("Total "+sum);
 		
+		in.close();
+		
 	}
 	
 	public static void dumpFields(String[] fields) {
