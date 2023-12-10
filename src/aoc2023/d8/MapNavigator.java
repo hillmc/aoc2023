@@ -5,22 +5,17 @@ import java.io.IOException;
 
 import org.slinger.ascii.AsciiInputStream;
 
-//the map is only a few hundred nodes, so might as well load it
+/** AOC 2023 Day 8 - Part 1 navigating a node map */
 public class MapNavigator {
 
-	public static String directions (String filename) throws IOException {
-		AsciiInputStream in = new AsciiInputStream(new FileInputStream(filename));
-		String d = in.readLine();
-		in.close();
-		return d;
-	}
+	MapNode cursor = null;
+	int steps = 0;
 
-	public static int travel(Map map, String directions) {
+	public int travel(Map map, char[] directions) {
 		MapNode start = map.get("AAA");
-		MapNode cursor = start;
-		int steps = 0;
+		cursor = start;
 		while (true) {
-			for (char d : directions.toCharArray()) {
+			for (char d : directions) {
 				System.out.print(cursor.name);
 				if (d=='R') cursor = cursor.right;
 				if (d=='L') cursor = cursor.left;
@@ -33,15 +28,25 @@ public class MapNavigator {
 					return steps;
 				}
 			}
+			System.out.print("\n["+steps+"] "); //restart directions, just show progress a bit
 		}
 	}
+
+	public static String loadDirections (String filename) throws IOException {
+		AsciiInputStream in = new AsciiInputStream(new FileInputStream(filename));
+		String d = in.readLine();
+		in.close();
+		return d;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		Map map = new Map();
 		map.loadMap("8/input");
 
-		String directions = directions("8/input");
-		
-		int steps = travel(map, directions);
+		String directions = loadDirections("8/input");
+
+		MapNavigator nav = new MapNavigator();
+		int steps = nav.travel(map, directions.toCharArray());
 		System.out.println(steps);
 	}
 }
