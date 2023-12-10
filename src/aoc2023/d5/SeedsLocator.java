@@ -8,9 +8,28 @@ import org.slinger.ascii.AsciiInputStream;
 
 import net.mchill.util.TimeStamp;
 
-//probably too much cut and pasting; I would to this for real
-//as it helps maintenance to know what expclitily you're dealing with
-//at each stage, but in principle these could all be an array of maps
+/** Advent of Code day 5; a series of indirection maps from 'seed' to 'location'
+ * via a number of indexes. 
+ * 
+ * In this case I've named each indirection and cut and paste the 
+ * code, rather than try and make a map or array of maps, because it makes it much
+ * easier to read and follow.
+ * 
+ * Main problem here was trying to do each map as an array at first (see SparseExceptionMap)
+ * because the arrays get very big. Instead I went for code; just use the algorithm given
+ * (ie if the value is in a range of one of the rules, then use that rule, otherwise return
+ * itself).
+ * 
+ * Also I tried running the big part 2 one in reverse, ie start with location 0 and try 1,2,3,4
+ * etc until you get to a location that has a valid seed. This is probably actually
+ * what you want to do anyway (that is the task question - what's the nearest location)
+ * rather than having to look through all the seeds to find the smallest location, which
+ * is what I did to begin with. Both give right answers, but bear in mind this may
+ * not work well for maps that are not 1-1.
+ * 
+ * Also I manually split the input file as that one-off manual activity greatly simplified
+ * the automatic parsing
+ */
 public class SeedsLocator {
 
 	RangeExceptionMap seeds2soil = new RangeExceptionMap("seed2soil"); //the position is the seed, the value the soil
@@ -126,9 +145,7 @@ public class SeedsLocator {
 		while (seed==-1) {
 			minLoc++;
 			seed = locator.getSeedForLocation(minLoc);
-			if ((minLoc % 1000000)==0) {
-				System.out.print(".");
-			}
+			if ((minLoc % 1000000)==0) System.out.print("."); //visual "I'm doing something"
 			//is it a candidate seed?
 			if (!useeds.isInRange(seed)) {
 				seed = -1;
